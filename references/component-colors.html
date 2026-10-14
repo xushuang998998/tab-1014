@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会场组件配色参考 · 按背景色色系</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #F5F6F8; color: #1A1A1A; padding: 32px 24px 64px; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: #666; line-height: 1.7; margin-bottom: 24px; }
+  .idx { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .idx a { text-decoration: none; font-size: 12px; padding: 5px 12px; border-radius: 999px; background: #fff; border: 1px solid #E2E4E8; color: #333; }
+  .idx a:hover { border-color: #166FF7; color: #166FF7; }
+  .idx a i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+
+  .family { background: #fff; border-radius: 14px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+  .family-head { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+  .family-head .ball { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,.08); }
+  .family-head h2 { font-size: 17px; }
+  .family-note { font-size: 12px; color: #888; margin-bottom: 18px; }
+
+  .comp { margin-top: 22px; border-top: 1px solid #F0F1F3; padding-top: 16px; }
+  .comp h3 { font-size: 14px; margin-bottom: 3px; }
+  .comp .desc { font-size: 11.5px; color: #999; margin-bottom: 12px; line-height: 1.6; }
+
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch; }
+  .sw { border-radius: 10px; overflow: hidden; border: 1px solid #E8E9EC; min-width: 128px; flex: 1; }
+  .sw .blk { height: 52px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; letter-spacing: .3px; }
+  .sw .cap { padding: 6px 8px 7px; background: #FAFAFB; font-size: 10.5px; color: #555; line-height: 1.5; }
+  .sw .cap b { display: block; color: #1A1A1A; font-size: 11px; }
+  .lbl { font-size: 11px; color: #888; width: 100%; margin: 10px 0 6px; font-weight: 600; }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #555; background: #F4F5F7; border-radius: 6px; padding: 3px 8px; margin-bottom: 10px; }
+  .floor-demo { border-radius: 8px; height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .floor-demo .ic { width: 10px; height: 10px; border-radius: 2px; }
+  footer { text-align: center; font-size: 11.5px; color: #999; margin-top: 8px; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>会场组件配色参考</h1>
+  <div class="sub">
+    按会场背景色色系整理：日常活动 8 色系（每系浅色 / 深色两档背景）+ 大促&夜间 3 色。<br>
+    每个色系下给出 老虎机 / 一键领券红包 / 横滑Tab / 秒杀券 / 楼层条 / 会场背景色 的具体色值。
+    「浅色背景」列 = 会场背景为浅色时组件用的配色；「深色背景」列 = 会场背景为深色时组件用的配色。
+  </div>
+  <div class="idx" id="idx"></div>
+  <div id="list"></div>
+  <footer>
+    色值与工具内渲染一致（Figma 精确提取 + 渐变均为左上→右下 127°/线性）。<br>
+    楼层条：底色 = 会场背景色；浅色背景 → 文字用组件标题色、装饰图标用同系深色；深色背景 → 文字白（黄系除外）、装饰图标用老虎机蒙版浅端色。
+  </footer>
+</div>
+
+<script>
+// ── 老虎机 preset（按钮/蒙版/卡片/奖品框/标题色）─────────────────────────────
+const SLOT = {
+  dacuhong:  { name:'大促红',  from:'#FF3048', to:'#FF2D5D', slotFrom:'#FFF2F6', slotTo:'#FEDCE2', rect7From:'#FFD8DA', rect7To:'#FFC7D4', boxFrom:'#FFFFFF', boxTo:'#FFF0F3', title:'#770101', btnText:'#FFFFFF' },
+  qinrenfen: { name:'情人粉',  from:'#F952FF', to:'#FF443C', slotFrom:'#FFEDF6', slotTo:'#FFCEF4', rect7From:'#FFB8D8', rect7To:'#FFCCF8', boxFrom:'#FFFFFF', boxTo:'#FFF0F5', title:'#760101', btnText:'#FFFFFF' },
+  huang:     { name:'黄色',    from:'#FF3048', to:'#FF2D5D', slotFrom:'#FFF6CE', slotTo:'#FFECAD', rect7From:'#FFE4A7', rect7To:'#FFE8A5', boxFrom:'#FFFFFF', boxTo:'#FFFBE8', title:'#AE0000', btnText:'#FFFFFF' },
+  ju:        { name:'橘色',    from:'#FF3328', to:'#FF7632', slotFrom:'#FFE5D0', slotTo:'#FBE8D8', rect7From:'#FFE4CE', rect7To:'#FFD2B0', boxFrom:'#FFFFFF', boxTo:'#FFF5EE', title:'#AE0000', btnText:'#FFFFFF' },
+  lv:        { name:'绿色',    from:'#46E800', to:'#69E129', slotFrom:'#F9FFF0', slotTo:'#E8FCD1', rect7From:'#CDFCA9', rect7To:'#B6FF7D', boxFrom:'#FFFFFF', boxTo:'#F5FFF0', title:'#00A611', btnText:'#FFFFFF' },
+  qing:      { name:'青绿',    from:'#1FD6B4', to:'#00C8A6', slotFrom:'#EEFDFB', slotTo:'#CDFCF3', rect7From:'#CEF9F1', rect7To:'#BFF7EC', boxFrom:'#FFFFFF', boxTo:'#F0FFFC', title:'#008763', btnText:'#FFFFFF' },
+  cyan:      { name:'青蓝',    from:'#0598FE', to:'#06AFFE', slotFrom:'#E0FFFD', slotTo:'#7CF0FF', rect7From:'#6BE0FF', rect7To:'#4ACFFF', boxFrom:'#FFFFFF', boxTo:'#F0FFFE', title:'#008CF1', btnText:'#FFFFFF' },
+  blue:      { name:'蓝色',    from:'#0598FE', to:'#06AFFE', slotFrom:'#B8E8FF', slotTo:'#A8E0FF', rect7From:'#90D8FF', rect7To:'#70C8FF', boxFrom:'#FFFFFF', boxTo:'#F5FBFF', title:'#008CF1', btnText:'#FFFFFF' },
+  nianhuo:   { name:'年货红',  from:'#FFDCAB', to:'#FFF9C9', slotFrom:'#FF5F5F', slotTo:'#FF5B60', rect7From:'#FF4248', rect7To:'#FF7073', boxFrom:'#FFF8E7', boxTo:'#FFE4B5', title:'#FFFFFF', btnText:'#DC2300' },
+  meihong:   { name:'玫红',    from:'#FBE7AB', to:'#FCF1D4', slotFrom:'#FF76D6', slotTo:'#FF009A', rect7From:'#FF4BD2', rect7To:'#FF3DB5', boxFrom:'#FFE8F5', boxTo:'#FFCCE8', title:'#FFFFFF', btnText:'#77321E' },
+  zi:        { name:'紫色',    from:'#FED7BF', to:'#FCF0E3', slotFrom:'#3819A2', slotTo:'#6E4BC3', rect7From:'#5A2EE3', rect7To:'#231355', boxFrom:'#F0E8FF', boxTo:'#D4C4FF', title:'#FFFFFF', btnText:'#2A1471' },
+  'zi-light':{ name:'紫色浅',  from:'#FED7BF', to:'#FCF0E3', slotFrom:'#6C47EC', slotTo:'#6333D9', rect7From:'#5A2EE3', rect7To:'#A386FD', boxFrom:'#F5F0FF', boxTo:'#E0D4FF', title:'#FFFFFF', btnText:'#2A1471' },
+}
+// ── 一键领券红包 ────────────────────────────────────────────────────────────
+const COUPON = {
+  red:      { name:'红色',   card:'#FFE7EC', waistFrom:'#FFD8DA', waistTo:'#FFC7D4', btnFrom:'#FF3048', btnTo:'#FF2D5D', text:'#770101', btnText:'#FFFFFF' },
+  pink:     { name:'粉色',   card:'#FFE5F5', waistFrom:'#FDDCEE', waistTo:'#FFBCE0', btnFrom:'#F952FF', btnTo:'#FF443C', text:'#760101', btnText:'#FFFFFF' },
+  gold1:    { name:'黄色',   card:'#FFFADF', waistFrom:'#FDF5CF', waistTo:'#FFF4BD', btnFrom:'#FF3048', btnTo:'#FF2D5D', text:'#AE0000', btnText:'#FFFFFF' },
+  gold2:    { name:'橙金',   card:'#FBE5D3', waistFrom:'#FFEDD8', waistTo:'#F6D4AA', btnFrom:'#FF3328', btnTo:'#FF7632', text:'#AE0000', btnText:'#FFFFFF' },
+  green:    { name:'绿色',   card:'#E3FFC6', waistFrom:'#DBF7BD', waistTo:'#DBF7BD', btnFrom:'#46E800', btnTo:'#69E129', text:'#00A611', btnText:'#FFFFFF' },
+  teal:     { name:'青绿',   card:'#DFFDFD', waistFrom:'#CFFAF6', waistTo:'#A7F4ED', btnFrom:'#1FD6B4', btnTo:'#00C8A6', text:'#008763', btnText:'#FFFFFF' },
+  cyan:     { name:'青蓝',   card:'#D3F9FF', waistFrom:'#7EF2FF', waistTo:'#8CE4FF', btnFrom:'#0598FE', btnTo:'#06AFFE', text:'#008CF1', btnText:'#FFFFFF' },
+  blue:     { name:'蓝色',   card:'#DEF1FE', waistFrom:'#C8E2FB', waistTo:'#A7D2FF', btnFrom:'#0598FE', btnTo:'#06AFFE', text:'#008CF1', btnText:'#FFFFFF' },
+  'promo-red-dark':  { name:'大促红深', card:'#FF4242', waistFrom:'#FF3A2F', waistTo:'#FF1903', btnFrom:'#FFDC73', btnTo:'#FFDC73', text:'#FFFFFF', btnText:'#FF2D19' },
+  'promo-pink-dark': { name:'玫红深',   card:'#FF58B1', waistFrom:'#FF60B8', waistTo:'#FF4FD0', btnFrom:'#FFF8E4', btnTo:'#FFDAC4', text:'#FFFFFF', btnText:'#4E0011' },
+  night:            { name:'夜间紫',   card:'#593DC7', waistFrom:'#3828A0', waistTo:'#604AB8', btnFrom:'#FBE7AB', btnTo:'#FCF1D4', text:'#FFFFFF', btnText:'#77321E' },
+  'night-light':    { name:'夜间浅紫', card:'#B8A8FF', waistFrom:'#A798FF', waistTo:'#9788FF', btnFrom:'#FBE7AB', btnTo:'#FCF1D4', text:'#2A1471', btnText:'#77321E' },
+}
+// ── 横滑 Tab：深色背景版（默认）/ 浅色背景版 ────────────────────────────────
+const HTAB = {
+  red:    { dark:{ unsel:'#FF696C', unselText:'#FFD0D0', act:['#FFF1F0','#FFE5E8','#F6D4DD'], actText:'#FF3B3F' }, light:{ selFrom:'#FF3B3F', selTo:'#FF696C', unsel:'#FFBEBF', unselText:'#FF7377' } },
+  pink:   { dark:{ unsel:'#FF4A92', unselText:'#FFD9F5', act:['#FFF0FD','#FFE5F6','#F4D4F6'], actText:'#FF2A83' }, light:{ selFrom:'#FF4995', selTo:'#FF4992', unsel:'#FFD6E2', unselText:'#FF76AE' } },
+  yellow: { dark:{ unsel:'#FFC70F', unselText:'#8E0000', act:['#FFFDC9','#FFFBA8','#FFF979'], actText:'#AE0000' }, light:{ selFrom:'#FFA008', selTo:'#FF8649', unsel:'#FFFAD1', unselText:'#C37249' } },
+  orange: { dark:{ unsel:'#FF9A5A', unselText:'#FFF0E8', act:['#FFF8E8','#FFEFC8','#FFE8A8'], actText:'#E55A00' }, light:{ selFrom:'#FF721F', selTo:'#FF261F', unsel:'#FFEED4', unselText:'#FF381F' } },
+  green:  { dark:{ unsel:'#279E0E', unselText:'#E2F7CD', act:['#FAFFF0','#E9FFB5','#D4FF8F'], actText:'#279E0E' }, light:{ selFrom:'#67DF01', selTo:'#23C900', unsel:'#CEFFA0', unselText:'#46CF2A' } },
+  teal:   { dark:{ unsel:'#18D8CF', unselText:'#ABFFFB', act:['#C9FFE7','#C8F8EF','#B8F0E8'], actText:'#008763' }, light:{ selFrom:'#00E744', selTo:'#00D2AC', unsel:'#D1FFDB', unselText:'#00B956' } },
+  cyan:   { dark:{ unsel:'#00B7DB', unselText:'#DAFFFD', act:['#E0FFFE','#C9EFFF','#B8F0FF'], actText:'#008CF1' }, light:{ selFrom:'#25E2FF', selTo:'#3AC4FF', unsel:'#84EAFF', unselText:'#00AEFF' } },
+  blue:   { dark:{ unsel:'#0598FE', unselText:'#B8F8FF', act:['#CCF0FF','#A8E0FF','#90D8FF'], actText:'#008CF1' }, light:{ selFrom:'#0598FE', selTo:'#06AFFE', unsel:'#B8D4FF', unselText:'#008CF1' } },
+  purple: { dark:{ unsel:'#7D2AE2', unselText:'#E9D5FF', act:['#F0E5FF','#E0CCFF','#D4B3FF'], actText:'#5A1EB0' }, light:{ selFrom:'#7D2AE2', selTo:'#5A1EB0', unsel:'#E9D5FF', unselText:'#7D2AE2' } },
+}
+// ── 秒杀券色板：浅色背景用 d 系（满底深色券面）/ 深色背景用 l 系（白边浅底券面）──
+const FS = {
+  d1:{ from:'#FF2A47', to:'#FF3A64', main:'#FFFFFF', accent:'#FFE74D' }, d2:{ from:'#FF3286', to:'#FD1977', main:'#FFFFFF', accent:'#FFE74D' },
+  d3:{ from:'#FF9900', to:'#FF8701', main:'#FFFFFF', accent:'#FFE74D' }, d4:{ from:'#FF5838', to:'#FF4E2C', main:'#FFFFFF', accent:'#FFE74D' },
+  d5:{ from:'#2CB86E', to:'#18AF60', main:'#FFFFFF', accent:'#FFE74D' }, d6:{ from:'#00D0C6', to:'#00CAC0', main:'#FFFFFF', accent:'#FFE74D' },
+  d7:{ from:'#00D4FF', to:'#01C9F1', main:'#FFFFFF', accent:'#FFE74D' }, d8:{ from:'#22BEFF', to:'#12B9FF', main:'#FFFFFF', accent:'#FFE74D' },
+  l1:{ from:'#FFF2F5', to:'#FFDDE2', border:'#FFFFFF', main:'#111111', accent:'#FF2D19' }, l2:{ from:'#FFEFF6', to:'#FFDEEC', border:'#FFFFFF', main:'#111111', accent:'#FD1A78' },
+  l3:{ from:'#FFFAE1', to:'#FFEC9F', border:'#FFFFFF', main:'#111111', accent:'#FF8800' }, l4:{ from:'#FFEFE3', to:'#FBE8D8', border:'#FFFFFF', main:'#111111', accent:'#FF5534' },
+  l5:{ from:'#F8FFEF', to:'#E8FCD2', border:'#FFFFFF', main:'#111111', accent:'#05A513' }, l6:{ from:'#EDFEFB', to:'#CEFCF3', border:'#FFFFFF', main:'#111111', accent:'#008763' },
+  l7:{ from:'#E3FDFF', to:'#ACF7FF', border:'#FFFFFF', main:'#111111', accent:'#00A1D6' }, l8:{ from:'#E4F6FF', to:'#C8EBFF', border:'#FFFFFF', main:'#111111', accent:'#008CF1' },
+}
+
+// ── 8 色系 + 大促 3 色：组件选色映射 ────────────────────────────────────────
+const FAMILIES = [
+  { key:'red',    name:'红色',   dot:'#FB0000', bgLight:'#FFCCCC', bgDark:'#FB0000', slotL:'dacuhong',  slotD:'dacuhong',  cL:'red',    cD:'red',              htab:'red',    fsL:'d1', fsD:'l1' },
+  { key:'pink',   name:'粉色',   dot:'#FC1A76', bgLight:'#FFCFEC', bgDark:'#FC1A76', slotL:'qinrenfen', slotD:'qinrenfen', cL:'pink',   cD:'pink',              htab:'pink',   fsL:'d2', fsD:'l2' },
+  { key:'yellow', name:'黄色',   dot:'#FFDA00', bgLight:'#FFF38F', bgDark:'#FFDA00', slotL:'huang',     slotD:'huang',     cL:'gold1',  cD:'gold1',             htab:'yellow', fsL:'d3', fsD:'l3', note:'黄色深色背景下楼层条文字不用白（用 #AE0000）' },
+  { key:'orange', name:'橙色',   dot:'#FF4E2C', bgLight:'#F6D5A2', bgDark:'#FF4E2C', slotL:'ju',        slotD:'ju',        cL:'gold2',  cD:'gold2',             htab:'orange', fsL:'d4', fsD:'l4' },
+  { key:'green',  name:'绿色',   dot:'#087039', bgLight:'#AEF380', bgDark:'#087039', slotL:'lv',        slotD:'lv',        cL:'green',  cD:'green',             htab:'green',  fsL:'d5', fsD:'l5' },
+  { key:'teal',   name:'青绿',   dot:'#00D0C6', bgLight:'#AAFFBC', bgDark:'#00D0C6', slotL:'qing',      slotD:'qing',      cL:'teal',   cD:'teal',              htab:'teal',   fsL:'d6', fsD:'l6' },
+  { key:'cyan',   name:'青蓝',   dot:'#00D4FF', bgLight:'#A5FDF9', bgDark:'#00D4FF', slotL:'cyan',      slotD:'cyan',      cL:'cyan',   cD:'cyan',              htab:'cyan',   fsL:'d7', fsD:'l7' },
+  { key:'blue',   name:'蓝色',   dot:'#0DB9FF', bgLight:'#CCF0FF', bgDark:'#0DB9FF', slotL:'blue',      slotD:'blue',      cL:'blue',   cD:'blue',              htab:'blue',   fsL:'d8', fsD:'l8' },
+  { key:'promo-red',  name:'大促红', dot:'#FB0000', bgLight:'#FFCCCC', bgDark:'#FB0000', slotL:'dacuhong',  slotD:'nianhuo', cL:'red',            cD:'promo-red-dark',  htab:'red',    fsL:'d1', fsD:'l1', promo:true },
+  { key:'promo-pink', name:'玫红',   dot:'#FC1A76', bgLight:'#FFCCE5', bgDark:'#FC1A76', slotL:'qinrenfen', slotD:'meihong', cL:'pink',           cD:'promo-pink-dark', htab:'pink',   fsL:'d2', fsD:'l2', promo:true },
+  { key:'night',      name:'夜间',   dot:'#2D186E', bgLight:'#C9B8FF', bgDark:'#2D186E', slotL:'zi-light',  slotD:'zi',      cL:'night-light',    cD:'night',           htab:'purple', fsL:'d7', fsD:'l7', promo:true, note:'夜间浅色背景下楼层条文字用 #2A1471' },
+]
+
+const contrast = hex => { const n = parseInt(hex.slice(1), 16); const l = (0.299*(n>>16&255) + 0.587*(n>>8&255) + 0.114*(n&255)) / 255; return l > 0.62 ? '#1A1A1A' : '#FFFFFF' }
+
+const sw = (title, hex, textHex) => `
+  <div class="sw">
+    <div class="blk" style="background:${hex};color:${textHex || contrast(hex)}">${hex}</div>
+    <div class="cap"><b>${title}</b>${hex}</div>
+  </div>`
+const grad = (title, from, to, textHex) => `
+  <div class="sw">
+    <div class="blk" style="background:linear-gradient(135deg,${from},${to});color:${textHex || contrast(to)}">${from} → ${to}</div>
+    <div class="cap"><b>${title}</b>${from} / ${to}</div>
+  </div>`
+const grad3 = (title, stops, textHex) => `
+  <div class="sw">
+    <div class="blk" style="background:linear-gradient(135deg,${stops.join(',')});color:${textHex || contrast(stops[1])}">${stops[0]} → ${stops[2]}</div>
+    <div class="cap"><b>${title}</b>${stops.join(' / ')}</div>
+  </div>`
+
+const idx = document.getElementById('idx')
+idx.innerHTML = FAMILIES.map(f => `<a href="#f-${f.key}"><i style="background:${f.dot}"></i>${f.name}</a>`).join('')
+
+document.getElementById('list').innerHTML = FAMILIES.map(f => {
+  const sL = SLOT[f.slotL], sD = SLOT[f.slotD], cL = COUPON[f.cL], cD = COUPON[f.cD], h = HTAB[f.htab]
+  const fsD = FS[f.fsD], fsL = FS[f.fsL]
+  // 楼层条派生：浅背景 文字=浅色preset标题色、图标=色系深色；深背景 文字=白(黄除外/夜间浅#2A1471)、图标=深色preset蒙版浅端
+  const flText = f.key === 'night' ? '#2A1471' : sL.title
+  const fdText = f.key === 'yellow' ? sD.title : '#FFFFFF'
+  const flIcon = f.bgDark, fdIcon = sD.slotFrom
+  return `
+  <div class="family" id="f-${f.key}">
+    <div class="family-head"><span class="ball" style="background:${f.dot}"></span><h2>${f.name}${f.promo ? '（大促&夜间）' : ''}</h2></div>
+    <div class="family-note">${f.note || ''}</div>
+
+    <div class="comp"><h3>① 会场背景色</h3><div class="desc">画布底色，所有组件绘制在这层之上</div>
+      <div class="row">${sw('浅色背景', f.bgLight)}${sw('深色背景', f.bgDark)}</div>
+    </div>
+
+    <div class="comp"><h3>② 老虎机</h3><div class="desc">按钮渐变 / 蒙版背景渐变 / 备份小卡片渐变 / 奖品框渐变 / 标题文字色 · ${SLOT[f.slotL].name}（浅）/ ${SLOT[f.slotD].name}（深）</div>
+      <div class="lbl">浅色背景版（preset：${sL.name}）</div>
+      <div class="row">${grad('按钮', sL.from, sL.to, '#FFFFFF')}${grad('蒙版背景', sL.slotFrom, sL.slotTo)}${grad('小卡片', sL.rect7From, sL.rect7To)}${grad('奖品框', sL.boxFrom, sL.boxTo)}${sw('标题文字', sL.title, sL.title)}</div>
+      <div class="lbl">深色背景版（preset：${sD.name}）</div>
+      <div class="row">${grad('按钮', sD.from, sD.to, sD.btnText)}${grad('蒙版背景', sD.slotFrom, sD.slotTo)}${grad('小卡片', sD.rect7From, sD.rect7To)}${grad('奖品框', sD.boxFrom, sD.boxTo)}${sw('标题文字', sD.title, sD.title)}</div>
+    </div>
+
+    <div class="comp"><h3>③ 一键领券红包</h3><div class="desc">券包背景 / 腰封渐变 / 按钮渐变 / 标题文字色 · ${cL.name}（浅）/ ${cD.name}（深）</div>
+      <div class="lbl">浅色背景版（配色：${cL.name}）</div>
+      <div class="row">${sw('券包背景', cL.card)}${grad('腰封', cL.waistFrom, cL.waistTo)}${grad('按钮', cL.btnFrom, cL.btnTo, cL.btnText)}${sw('标题文字', cL.text, cL.text)}</div>
+      <div class="lbl">深色背景版（配色：${cD.name}）</div>
+      <div class="row">${sw('券包背景', cD.card)}${grad('腰封', cD.waistFrom, cD.waistTo)}${grad('按钮', cD.btnFrom, cD.btnTo, cD.btnText)}${sw('标题文字', cD.text, cD.text)}</div>
+    </div>
+
+    <div class="comp"><h3>④ 横滑 Tab</h3><div class="desc">选中/未选中两态，各分深色背景版与浅色背景版</div>
+      <div class="lbl">深色背景版 · 未选中（底色 + 文字）</div>
+      <div class="row">${sw('未选中底色', h.dark.unsel, h.dark.unselText)}${sw('未选中文字', h.dark.unselText, h.dark.unselText)}${grad3('选中渐变底', h.dark.act)}${sw('选中文字', h.dark.actText, h.dark.actText)}</div>
+      <div class="lbl">浅色背景版 · 选中用渐变 + 白字白描边</div>
+      <div class="row">${grad('选中渐变', h.light.selFrom, h.light.selTo, '#FFFFFF')}${sw('未选中底色', h.light.unsel)}${sw('未选中文字', h.light.unselText, h.light.unselText)}</div>
+    </div>
+
+    <div class="comp"><h3>⑤ 秒杀券</h3><div class="desc">浅背景 → 深色版券面（${f.fsL}）；深背景 → 浅色版券面（${f.fsD}，白描边）</div>
+      <div class="lbl">浅色背景版（${f.fsL} · 满底色）</div>
+      <div class="row">${grad('券面渐变', fsL.from, fsL.to)}${sw('主文字', fsL.main, fsL.main)}${sw('强调色/角标', fsL.accent, fsL.accent)}</div>
+      <div class="lbl">深色背景版（${f.fsD} · 白描边浅底）</div>
+      <div class="row">${grad('券面渐变', fsD.from, fsD.to)}${sw('描边', fsD.border)}${sw('主文字', fsD.main, fsD.main)}${sw('强调色/角标', fsD.accent, fsD.accent)}</div>
+    </div>
+
+    <div class="comp"><h3>⑥ 楼层条</h3><div class="desc">底色 = 会场背景色本身；文字色与装饰图标色按深浅派生</div>
+      <div class="lbl">浅色背景版</div>
+      <div class="floor-demo" style="background:${f.bgLight}">
+        <span class="ic" style="background:${flIcon}"></span>
+        <span style="color:${flText}">楼层标题示例</span>
+        <span class="ic" style="background:${flIcon}"></span>
+      </div>
+      <div class="row">${sw('底色（=浅背景）', f.bgLight)}${sw('文字色', flText, flText)}${sw('装饰图标色', flIcon)}</div>
+      <div class="lbl">深色背景版</div>
+      <div class="floor-demo" style="background:${f.bgDark}">
+        <span class="ic" style="background:${fdIcon}"></span>
+        <span style="color:${fdText}">楼层标题示例</span>
+        <span class="ic" style="background:${fdIcon}"></span>
+      </div>
+      <div class="row">${sw('底色（=深背景）', f.bgDark)}${sw('文字色', fdText, fdText)}${sw('装饰图标色', fdIcon)}</div>
+    </div>
+  </div>`
+}).join('')
+</script>
+</body>
+</html>

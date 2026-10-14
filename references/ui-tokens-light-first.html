@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI 设计令牌 · 深浅色（浅色为主）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    /* ═══ 浅色主题（默认·主推）═══ */
+    --sl-bg:           #f2f2f5;
+    --sl-panel:        #ffffff;
+    --sl-surface:      #f7f7fa;
+    --sl-border:       rgba(20,20,35,0.08);
+    --sl-border-md:    rgba(20,20,35,0.14);
+    --sl-border-lg:    rgba(20,20,35,0.30);
+    --sl-text-1:       #1d1d2e;
+    --sl-text-2:       rgba(29,29,46,0.75);
+    --sl-text-3:       rgba(29,29,46,0.66);
+    --sl-text-4:       rgba(29,29,46,0.50);
+    --sl-primary:      #4f46e5;
+    --sl-primary-grad: linear-gradient(90deg, #4f46e5, #4338ca);
+    --sl-cta-text:     #ffffff;
+    --sl-cta-shadow:   rgba(79,70,229,0.30);
+    --sl-accent-blue:  #4f46e5;
+    --sl-accent-blue-bg: rgba(79,70,229,0.12);
+    --sl-info:         #1d4ed8;
+    --sl-info-bg:      rgba(45,120,244,0.10);
+    --sl-info-dot:     #2D78F4;
+    --sl-danger:       #FF192D;
+    --sl-danger-bg:    rgba(255,25,45,0.08);
+    --sl-success:      #00BF7F;
+    --sl-warning:      #F8B500;
+    --sl-overlay:      rgba(20,20,35,0.18);
+    --sl-control-bg:     #ececf1;
+    --sl-control-ring:   rgba(20,20,35,0.35);
+    --sl-control-active: #4f46e5;
+    --sl-active-tint:    rgba(20,20,35,0.06);
+    --sl-active-border:  #4f46e5;
+    --sl-fill:         rgba(20,20,35,0.05);
+    --sl-fill-md:      rgba(20,20,35,0.16);
+    --sl-btn-lib-bg:     #ffffff;
+    --sl-btn-lib-border: rgba(20,20,35,0.35);
+    --sl-btn-lib-text:   #1d1d2e;
+    --sl-switch-on:    #4f46e5;
+    --sl-switch-off:   rgba(17,25,37,0.15);
+    --sl-toggle-sel-border: #4f46e5;
+    --sl-toggle-sel-bg:   #e0e7ff;
+    --sl-toggle-sel-text: #4f46e5;
+    --sl-catalog-accent:    #4f46e5;
+    --sl-catalog-accent-bg: #e0e7ff;
+    --sl-card-scrim: linear-gradient(180deg, transparent, rgba(255,255,255,0.92));
+    --sl-input-bg:     #ffffff;
+    --sl-input-border: rgba(17,25,37,0.15);
+    --sl-input-hover:  #468dfb;
+    --sl-input-focus:  #166ff7;
+    --sl-sel-tint:     rgba(20,20,35,0.06);
+    --sl-sel-border:   rgba(20,20,35,0.28);
+    --sl-file-sel:     #e0e7ff;
+    --sl-hotzone-border: rgba(20,20,35,0.30);
+    --sl-dot:          transparent;
+    --sl-stage:        #f2f2f5;
+    --venue-frame-border: #ffffff;
+    --shadow-topbar:   0 1px 0 rgba(20,20,35,0.05);
+    --shadow-panel-r:  none;
+    --shadow-panel-l:  none;
+    --shadow-popover:  0 1px 3px rgba(20,20,35,0.08);
+    --shadow-card:     none;
+    --shadow-canvas:   none;
+  }
+  body.dark {
+    /* ═══ 深色主题 ═══ */
+    --sl-bg:           #010104;
+    --sl-panel:        #08080e;
+    --sl-surface:      #0f0f1a;
+    --sl-border:       rgba(235,233,252,0.07);
+    --sl-border-md:    rgba(235,233,252,0.12);
+    --sl-border-lg:    rgba(235,233,252,0.35);
+    --sl-text-1:       #ebe9fc;
+    --sl-text-2:       rgba(235,233,252,0.60);
+    --sl-text-3:       rgba(235,233,252,0.38);
+    --sl-text-4:       rgba(235,233,252,0.20);
+    --sl-primary:      #fad900;
+    --sl-primary-grad: linear-gradient(90deg, #fad900, #ffa203);
+    --sl-cta-text:     #1a1000;
+    --sl-cta-shadow:   rgba(250,217,0,0.3);
+    --sl-accent-blue:  #4f46e5;
+    --sl-accent-blue-bg: rgba(79,70,229,0.12);
+    --sl-info:         #6aa3ff;
+    --sl-info-bg:      rgba(45,120,244,0.14);
+    --sl-info-dot:     #2D78F4;
+    --sl-danger:       #f87171;
+    --sl-danger-bg:    rgba(248,113,113,0.10);
+    --sl-success:      #00BF7F;
+    --sl-warning:      #F8B500;
+    --sl-overlay:      rgba(0,0,0,0.5);
+    --sl-control-bg:     #0f0f1a;
+    --sl-control-ring:   rgba(235,233,252,0.40);
+    --sl-control-active: #fad900;
+    --sl-active-tint:    rgba(250,217,0,0.15);
+    --sl-active-border:  rgba(250,217,0,0.25);
+    --sl-fill:         rgba(235,233,252,0.07);
+    --sl-fill-md:      rgba(235,233,252,0.20);
+    --sl-btn-lib-bg:     rgba(248,181,0,0.08);
+    --sl-btn-lib-border: rgba(248,181,0,0.3);
+    --sl-btn-lib-text:   #F8B500;
+    --sl-switch-on:    #4f46e5;
+    --sl-switch-off:   rgba(255,255,255,0.10);
+    --sl-toggle-sel-border: #ffffff;
+    --sl-toggle-sel-bg:   #ffffff;
+    --sl-toggle-sel-text: #000000;
+    --sl-catalog-accent:    #ffffff;
+    --sl-catalog-accent-bg: rgba(255,255,255,0.10);
+    --sl-card-scrim: linear-gradient(180deg, transparent, rgba(0,0,0,0.75));
+    --sl-input-bg:     #0f0f1a;
+    --sl-input-border: rgba(235,233,252,0.25);
+    --sl-input-hover:  #468dfb;
+    --sl-input-focus:  #166ff7;
+    --sl-sel-tint:     rgba(250,217,0,0.10);
+    --sl-sel-border:   rgba(250,217,0,0.50);
+    --sl-file-sel:     rgba(255,255,255,0.08);
+    --sl-hotzone-border: rgba(255,255,255,0.85);
+    --sl-dot:          rgba(235,233,252,0.04);
+    --sl-stage:        #080C14;
+    --venue-frame-border: rgba(235,233,252,0.16);
+    --shadow-topbar:   0 1px 0 rgba(0,0,0,0.55), 0 2px 10px rgba(0,0,0,0.28);
+    --shadow-panel-r:  0 1px 0 rgba(0,0,0,0.55), 0 2px 10px rgba(0,0,0,0.28);
+    --shadow-panel-l:  0 1px 0 rgba(0,0,0,0.55), 0 2px 10px rgba(0,0,0,0.28);
+    --shadow-popover:  0 6px 20px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.35);
+    --shadow-card:     0 2px 16px rgba(0,0,0,0.45);
+    --shadow-canvas:   0 2px 16px rgba(0,0,0,0.45);
+  }
+
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--sl-bg); color: var(--sl-text-1); transition: background .25s, color .25s; padding: 32px 24px 80px; }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  .top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+  h1 { font-size: 21px; }
+  .mode { display: flex; border: 1px solid var(--sl-border-md); border-radius: 999px; overflow: hidden; }
+  .mode button { border: none; padding: 6px 18px; font-size: 13px; cursor: pointer; background: transparent; color: var(--sl-text-2); font-weight: 600; }
+  .mode button.on { background: var(--sl-primary); color: var(--sl-cta-text); }
+  .sub { font-size: 13px; color: var(--sl-text-3); margin: 6px 0 26px; line-height: 1.7; }
+
+  .sec { background: var(--sl-panel); border: 1px solid var(--sl-border); border-radius: 14px; padding: 22px; margin-bottom: 22px; }
+  .sec h2 { font-size: 15px; margin-bottom: 4px; }
+  .sec .d { font-size: 12px; color: var(--sl-text-3); margin-bottom: 16px; line-height: 1.6; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+  .tok { border: 1px solid var(--sl-border); border-radius: 10px; overflow: hidden; }
+  .tok .chip { height: 46px; }
+  .tok .chip.solid { background: var(--v); }
+  .tok .chip.grad { background-image: var(--v); }
+  .tok .info { padding: 7px 9px 8px; background: var(--sl-surface); }
+  .tok .info b { display: block; font-size: 11px; color: var(--sl-text-1); font-family: ui-monospace, Menlo, monospace; }
+  .tok .info span { font-size: 10px; color: var(--sl-text-3); word-break: break-all; font-family: ui-monospace, Menlo, monospace; }
+  .tok .info .use { display: block; font-size: 10px; color: var(--sl-text-2); margin-top: 2px; font-family: -apple-system, "PingFang SC", sans-serif; }
+
+  /* 组件示例区 */
+  .demo-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .btn { border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+  .btn.cta { background: var(--sl-primary-grad); color: var(--sl-cta-text); box-shadow: 0 1px 2px var(--sl-cta-shadow); }
+  .btn.lib { background: var(--sl-btn-lib-bg); border: 1px solid var(--sl-btn-lib-border); color: var(--sl-btn-lib-text); font-weight: 500; }
+  .btn.ghost { background: var(--sl-fill); color: var(--sl-text-1); font-weight: 500; }
+  .btn.danger { background: var(--sl-danger-bg); color: var(--sl-danger); font-weight: 600; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 12px; border-radius: 999px; background: var(--sl-info-bg); color: var(--sl-info); }
+  .pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--sl-info-dot); }
+  .infield { background: var(--sl-input-bg); border: 1px solid var(--sl-input-border); border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--sl-text-2); width: 200px; }
+  .infield:hover { border-color: var(--sl-input-hover); }
+  .infield:focus { border-color: var(--sl-input-focus); outline: none; }
+  .sw { width: 38px; height: 22px; border-radius: 999px; background: var(--sl-switch-on); position: relative; }
+  .sw.off { background: var(--sl-switch-off); }
+  .sw::after { content:''; position: absolute; top: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; right: 2px; }
+  .sw.off::after { right: auto; left: 2px; }
+  .radio { display: flex; gap: 8px; flex-wrap: wrap; }
+  .radio span { font-size: 12px; padding: 5px 14px; border-radius: 8px; background: var(--sl-control-bg); color: var(--sl-text-2); }
+  .radio span.on { background: var(--sl-toggle-sel-bg); color: var(--sl-toggle-sel-text); border: 1px solid var(--sl-toggle-sel-border); }
+  .carddemo { border: 1px solid var(--sl-border-md); border-radius: 10px; overflow: hidden; width: 180px; box-shadow: var(--shadow-card); }
+  .carddemo .img { height: 80px; background: var(--sl-fill); position: relative; }
+  .carddemo .img::after { content: ''; position: absolute; inset: 0; background: var(--sl-card-scrim); }
+  .carddemo .txt { padding: 9px 11px; font-size: 12px; color: var(--sl-text-2); background: var(--sl-panel); }
+  .fileitem { display: flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 7px 12px; border-radius: 8px; background: var(--sl-file-sel); color: var(--sl-text-1); width: 170px; border-left: 3px solid var(--sl-catalog-accent); }
+  .listrow { display: flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 7px 12px; border-radius: 8px; background: var(--sl-sel-tint); border: 1px solid var(--sl-sel-border); color: var(--sl-text-1); width: 170px; }
+  .modal-demo { border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-popover); border: 1px solid var(--sl-border-md); }
+  .modal-demo .mask { height: 34px; background: var(--sl-overlay); }
+  .modal-demo .card { background: var(--sl-panel); padding: 10px 14px; font-size: 12px; color: var(--sl-text-1); }
+  .stagebox { height: 56px; border-radius: 10px; background: var(--sl-stage); border: 1px dashed var(--sl-border-md); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--sl-text-3); }
+  .textdemo p { font-size: 13px; margin-bottom: 4px; }
+  .t1 { color: var(--sl-text-1); } .t2 { color: var(--sl-text-2); } .t3 { color: var(--sl-text-3); } .t4 { color: var(--sl-text-4); }
+  footer { text-align: center; font-size: 11.5px; color: var(--sl-text-4); margin-top: 10px; line-height: 1.8; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: var(--sl-fill); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>UI 设计令牌</h1>
+    <div class="mode">
+      <button id="b-light" class="on" onclick="setMode('light')">浅色（默认·主推）</button>
+      <button id="b-dark" onclick="setMode('dark')">深色</button>
+    </div>
+  </div>
+  <div class="sub">
+    闪购会场工具界面令牌，与工具内实现一一对应（CSS 变量 <code>--sl-*</code>，主题切换=换根 class）。<br>
+    <b>接入方式：以浅色为默认实现，深色为可选主题</b>——把下面浅色那组变量铺在 <code>:root</code>，深色那组铺在 <code>body.dark-mode</code>，所有组件只引用变量不写死色值。
+  </div>
+
+  <div class="sec">
+    <h2>01 · 基础色板（背景/面板/边框/文字）</h2>
+    <div class="d">界面四层底色 + 三档边框 + 四级文字。浅色去脏原则：靠边框分层不用投影。</div>
+    <div class="grid" id="g-basic"></div>
+    <div class="demo-row" style="margin-top:16px">
+      <div class="textdemo">
+        <p class="t1">text-1 主文字（标题/正文重点）</p>
+        <p class="t2">text-2 次文字（说明/标签）</p>
+        <p class="t3">text-3 辅助文字（占位/提示）</p>
+        <p class="t4">text-4 弱化文字（页脚/禁用）</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>02 · 品牌与语义色</h2>
+    <div class="d">浅色主题强调色=靛蓝 #4f46e5（主按钮/选中/开关）；深色主题强调色=美团黄 #fad900。语义色深浅各一套变体。</div>
+    <div class="grid" id="g-brand"></div>
+    <div class="demo-row" style="margin-top:16px">
+      <button class="btn cta">主按钮（primary-grad）</button>
+      <button class="btn lib">库/次要按钮</button>
+      <button class="btn ghost">幽灵按钮（fill）</button>
+      <button class="btn danger">危险操作</button>
+      <span class="pill"><i></i>信息提示（info）</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>03 · 控件态</h2>
+    <div class="d">开关/单选/输入/选中态。浅色控件选中统一靛蓝；深色选中为美团黄、单选胶囊黑白。</div>
+    <div class="grid" id="g-ctrl"></div>
+    <div class="demo-row" style="margin-top:16px">
+      <div class="sw"></div><div class="sw off"></div>
+      <div class="radio"><span class="on">选中胶囊</span><span>未选中</span><span>未选中</span></div>
+      <input class="infield" placeholder="输入框：hover/focus 蓝边">
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>04 · 选中与列表态</h2>
+    <div class="d">目录/侧边栏选中（file-sel 蓝底+左侧竖线）与属性面板列表选中（sel-tint 灰底+墨色边）是两套，不要混用。</div>
+    <div class="grid" id="g-sel"></div>
+    <div class="demo-row" style="margin-top:16px">
+      <div class="fileitem">▤ 目录选中项</div>
+      <div class="listrow">▤ 列表选中项</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>05 · 浮层与阴影</h2>
+    <div class="d">浅色阴影极轻（去脏）；深色靠阴影分层。蒙层浅色淡灰、深色半透明黑。</div>
+    <div class="grid" id="g-shadow"></div>
+    <div class="demo-row" style="margin-top:16px">
+      <div class="modal-demo"><div class="mask"></div><div class="card">弹窗卡（popover 阴影 + overlay 蒙层）</div></div>
+      <div class="stagebox">画布舞台（stage）</div>
+    </div>
+  </div>
+
+  <footer>
+    完整变量清单（复制即用）：浅色铺 :root / 深色铺 body.dark-mode · 深浅同值项只写一次。<br>
+    变量名与工具源码 src/index.css 完全一致，色值 2026-10-08 与线上同步。
+  </footer>
+</div>
+
+<script>
+const T = (name, v, use, type='solid') => `
+  <div class="tok">
+    <div class="chip ${type}" style="--v:${v}"></div>
+    <div class="info"><b>--${name}</b><span>${v.replace(/,/g, ', ')}</span><span class="use">${use}</span></div>
+  </div>`
+
+document.getElementById('g-basic').innerHTML =
+  T('sl-bg', '#f2f2f5', '页面主背景') +
+  T('sl-panel', '#ffffff', '侧边栏/顶栏/弹窗面板') +
+  T('sl-surface', '#f7f7fa', '卡片/区块底') +
+  T('sl-border', 'rgba(20,20,35,0.08)', '发丝线分隔') +
+  T('sl-border-md', 'rgba(20,20,35,0.14)', '卡片/控件边框') +
+  T('sl-border-lg', 'rgba(20,20,35,0.30)', '强调描边') +
+  T('sl-text-1', '#1d1d2e', '主文字') +
+  T('sl-text-2', 'rgba(29,29,46,0.75)', '次文字') +
+  T('sl-text-3', 'rgba(29,29,46,0.66)', '辅助文字') +
+  T('sl-text-4', 'rgba(29,29,46,0.50)', '弱化文字') +
+  T('sl-overlay', 'rgba(20,20,35,0.18)', '弹窗蒙层') +
+  T('sl-fill', 'rgba(20,20,35,0.05)', '按钮/hover 微底') +
+  T('sl-fill-md', 'rgba(20,20,35,0.16)', '未选中控件底/页签点')
+
+document.getElementById('g-brand').innerHTML =
+  T('sl-primary', '#4f46e5', '强调色：主按钮/选中/开关') +
+  T('sl-primary-grad', 'linear-gradient(90deg,#4f46e5,#4338ca)', '主按钮渐变', 'grad') +
+  T('sl-cta-text', '#ffffff', '主按钮文字') +
+  T('sl-cta-shadow', 'rgba(79,70,229,0.30)', '主按钮投影色') +
+  T('sl-accent-blue', '#4f46e5', '功能蓝（深浅同值）') +
+  T('sl-accent-blue-bg', 'rgba(79,70,229,0.12)', '功能蓝浅底') +
+  T('sl-info', '#1d4ed8', '信息文字') +
+  T('sl-info-bg', 'rgba(45,120,244,0.10)', '信息提示底') +
+  T('sl-info-dot', '#2D78F4', '信息圆点') +
+  T('sl-danger', '#FF192D', '危险/删除') +
+  T('sl-danger-bg', 'rgba(255,25,45,0.08)', '危险按钮底') +
+  T('sl-success', '#00BF7F', '成功') +
+  T('sl-warning', '#F8B500', '警示/库按钮强调') +
+  T('sl-btn-lib-bg', '#ffffff', '库按钮底（浅色降次要）') +
+  T('sl-btn-lib-border', 'rgba(20,20,35,0.35)', '库按钮描边') +
+  T('sl-btn-lib-text', '#1d1d2e', '库按钮文字')
+
+document.getElementById('g-ctrl').innerHTML =
+  T('sl-control-bg', '#ececf1', '控件未选中底') +
+  T('sl-control-ring', 'rgba(20,20,35,0.35)', '控件未选中描边') +
+  T('sl-control-active', '#4f46e5', '控件选中态') +
+  T('sl-switch-on', '#4f46e5', 'Switch 开') +
+  T('sl-switch-off', 'rgba(17,25,37,0.15)', 'Switch 关') +
+  T('sl-toggle-sel-border', '#4f46e5', '单选胶囊选中边') +
+  T('sl-toggle-sel-bg', '#e0e7ff', '单选胶囊选中底') +
+  T('sl-toggle-sel-text', '#4f46e5', '单选胶囊选中字') +
+  T('sl-input-bg', '#ffffff', '输入框底') +
+  T('sl-input-border', 'rgba(17,25,37,0.15)', '输入框边') +
+  T('sl-input-hover', '#468dfb', '输入框 hover 边') +
+  T('sl-input-focus', '#166ff7', '输入框 focus 边')
+
+document.getElementById('g-sel').innerHTML =
+  T('sl-active-tint', 'rgba(20,20,35,0.06)', '开关/热区激活底') +
+  T('sl-active-border', '#4f46e5', '选中描边') +
+  T('sl-sel-tint', 'rgba(20,20,35,0.06)', '列表/卡片选中底') +
+  T('sl-sel-border', 'rgba(20,20,35,0.28)', '列表选中边') +
+  T('sl-file-sel', '#e0e7ff', '目录/侧边栏选中底') +
+  T('sl-catalog-accent', '#4f46e5', '侧边栏竖线/目录指示') +
+  T('sl-catalog-accent-bg', '#e0e7ff', '目录选中底（同 file-sel）') +
+  T('sl-hotzone-border', 'rgba(20,20,35,0.30)', '画布热区虚线（工具色不随品牌）')
+
+document.getElementById('g-shadow').innerHTML =
+  T('shadow-topbar', '0 1px 0 rgba(20,20,35,0.05)', '顶栏底边') +
+  T('shadow-popover', '0 1px 3px rgba(20,20,35,0.08)', '下拉/浮层') +
+  T('shadow-card', 'none', '卡片投影（浅色无）') +
+  T('shadow-panel-r/l', 'none', '左右面板（浅色无）') +
+  T('shadow-canvas', 'none', '画布（浅色无）') +
+  T('sl-stage', '#f2f2f5', '深度编辑画布舞台') +
+  T('sl-dot', 'transparent', '画布点阵（浅色不用）') +
+  T('venue-frame-border', '#ffffff', '手机预览帧描边')
+
+function setMode(m) {
+  document.body.classList.toggle('dark', m === 'dark')
+  document.getElementById('b-light').classList.toggle('on', m === 'light')
+  document.getElementById('b-dark').classList.toggle('on', m === 'dark')
+}
+</script>
+</body>
+</html>
